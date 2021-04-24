@@ -3,15 +3,14 @@ package polyfmt
 import "os"
 
 type Mode string
-type FormatterOption func()
 
 const (
 	// Pretty outputs text in a more humanized fashion and provides spinners for longer actions.
 	Pretty Mode = "pretty"
-	// Plain outputs text as pretty printed json.
-	Plain Mode = "plain"
 	// JSON outputs json formatted text, mainly suitable to be read by computers.
 	JSON Mode = "json"
+	// Dummy formatter that doesn't print anything
+	Silent Mode = "silent"
 )
 
 type Formatter interface {
@@ -45,11 +44,26 @@ func isTTY() bool {
 	return false
 }
 
+// isFiltered is a convenience function for detecting if the current mode is in the list of modes to print
+func isFiltered(currMode Mode, filterList []Mode) bool {
+	if len(filterList) < 1 {
+		return false
+	}
+
+	for _, mode := range filterList {
+		if mode == currMode {
+			return false
+		}
+	}
+
+	return true
+}
+
 // NewFormatter create a new formatter with the appropriate mode. If mode is pretty and the environment
-// this is run in is not interactive, it will intelligently revert to plain mode.
+// this is run in is not interactive, it will intelligently revert to json mode.
 func NewFormatter(mode Mode) (Formatter, error) {
 	if mode == Pretty && !isTTY() {
-		mode = Plain
+		mode = JSON
 	}
 
 	switch mode {
@@ -59,14 +73,14 @@ func NewFormatter(mode Mode) (Formatter, error) {
 			return nil, err
 		}
 		return f, nil
-	case Plain:
-		f, err := newPlainFormatter()
+	case JSON:
+		f, err := newJSONFormatter()
 		if err != nil {
 			return nil, err
 		}
 		return f, nil
-	case JSON:
-		f, err := newJSONFormatter()
+	case Silent:
+		f, err := newSilentFormatter()
 		if err != nil {
 			return nil, err
 		}

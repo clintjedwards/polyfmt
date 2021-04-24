@@ -9,8 +9,9 @@ import (
 )
 
 type prettyFormatter struct {
-	spinner *yacspin.Spinner
-	cfg     yacspin.Config
+	spinner        *yacspin.Spinner
+	cfg            yacspin.Config
+	currentMessage string // We store this so that we can restore it when we start a new spinner
 }
 
 func newPrettyFormatter() (*prettyFormatter, error) {
@@ -18,7 +19,6 @@ func newPrettyFormatter() (*prettyFormatter, error) {
 		Writer:            os.Stdout,
 		Frequency:         100 * time.Millisecond,
 		CharSet:           yacspin.CharSets[14],
-		Suffix:            " ",
 		SuffixAutoColon:   false,
 		StopCharacter:     "✓",
 		StopColors:        []string{"fgGreen"},
@@ -47,31 +47,49 @@ func (f *prettyFormatter) newSpinner() error {
 	if err != nil {
 		return err
 	}
+	spinner.Message(f.currentMessage)
 	f.spinner = spinner
 	return nil
 }
 
 func (f *prettyFormatter) Print(msg interface{}, filter ...Mode) {
-	f.spinner.Message(fmt.Sprintf("%s", msg))
+	if isFiltered(Pretty, filter) {
+		return
+	}
+
+	formattedMsg := fmt.Sprintf(" %s", msg)
+	f.spinner.Message(formattedMsg)
+	f.currentMessage = formattedMsg
+}
+
+func (f *prettyFormatter) Println(msg interface{}, filter ...Mode) {
+	if isFiltered(Pretty, filter) {
+		return
+	}
+
+	f.spinner.StopCharacter("")
+	_ = f.spinner.Stop()
+	fmt.Println(msg)
+	_ = f.newSpinner()
 }
 
 func (f *prettyFormatter) PrintErr(msg interface{}, filter ...Mode) {
-	f.spinner.StopFailMessage(fmt.Sprintf("%s", msg))
+	if isFiltered(Pretty, filter) {
+		return
+	}
+
+	f.spinner.StopFailMessage(fmt.Sprintf(" %s", msg))
 	_ = f.spinner.StopFail()
 	_ = f.newSpinner()
 }
 
 func (f *prettyFormatter) PrintSuccess(msg interface{}, filter ...Mode) {
+	if isFiltered(Pretty, filter) {
+		return
+	}
+
 	f.spinner.Suffix(fmt.Sprintf(" %s", msg))
 	_ = f.spinner.Stop()
-	f.spinner.Suffix(" ")
-	_ = f.newSpinner()
-}
-
-func (f *prettyFormatter) Println(msg interface{}, filter ...Mode) {
-	f.spinner.StopCharacter("")
-	_ = f.spinner.Stop()
-	fmt.Println(msg)
 	_ = f.newSpinner()
 }
 

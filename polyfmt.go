@@ -1,6 +1,9 @@
 package polyfmt
 
-import "os"
+import (
+	"fmt"
+	"os"
+)
 
 type Mode string
 
@@ -85,6 +88,7 @@ func NewFormatter(mode Mode) (Formatter, error) {
 			return nil, err
 		}
 		return f, nil
+	default:
+		return nil, fmt.Errorf("invalid formatter: %q", mode)
 	}
-	return nil, nil
 }

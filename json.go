@@ -5,6 +5,7 @@ import (
 	"fmt"
 )
 
+// jsonFormatter wraps the passed in interface and prints it.
 type jsonFormatter struct{}
 
 func newJSONFormatter() (*jsonFormatter, error) {
@@ -20,6 +21,7 @@ func (f *jsonFormatter) Print(msg interface{}, filter ...Mode) {
 	b, _ := json.Marshal(&tmp)
 	fmt.Println(string(b))
 }
+
 func (f *jsonFormatter) PrintErr(msg interface{}, filter ...Mode) {
 	if isFiltered(JSON, filter) {
 		return
@@ -29,6 +31,7 @@ func (f *jsonFormatter) PrintErr(msg interface{}, filter ...Mode) {
 	b, _ := json.Marshal(&tmp)
 	fmt.Println(string(b))
 }
+
 func (f *jsonFormatter) PrintSuccess(msg interface{}, filter ...Mode) {
 	if isFiltered(JSON, filter) {
 		return
@@ -38,6 +41,7 @@ func (f *jsonFormatter) PrintSuccess(msg interface{}, filter ...Mode) {
 	b, _ := json.Marshal(&tmp)
 	fmt.Println(string(b))
 }
+
 func (f *jsonFormatter) Println(msg interface{}, filter ...Mode) {
 	if isFiltered(JSON, filter) {
 		return
@@ -47,4 +51,5 @@ func (f *jsonFormatter) Println(msg interface{}, filter ...Mode) {
 	b, _ := json.Marshal(&tmp)
 	fmt.Println(string(b))
 }
+
 func (f *jsonFormatter) Finish() {}

@@ -1,5 +1,7 @@
 package polyfmt
 
+// silentFormatter prints absolutely nothing and is essentially an implementation for --silent on
+// command lines.
 type silentFormatter struct{}
 
 func newSilentFormatter() (*silentFormatter, error) {

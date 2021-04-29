@@ -8,6 +8,10 @@ import (
 	"github.com/theckman/yacspin"
 )
 
+// prettyFormatter is a printer with a spinner attached.
+//
+// This current implementation has an auto suffix field that we ignore so we can simplify the API
+// in order to provide a cleaner interface for other types of formatters.
 type prettyFormatter struct {
 	spinner        *yacspin.Spinner
 	cfg            yacspin.Config

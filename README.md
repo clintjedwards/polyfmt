@@ -20,14 +20,14 @@ Polyfmt provides a very simple API, full of print functions.
 Initiate a new formatter instance, passing in what type of formatter you want back. This is usually passed in
 by your user at runtime via flags or config.
 
-    pfmt, _ := polyfmt.NewFormatter(JSON)
+    pfmt, _ := polyfmt.NewFormatter(polyfmt.JSON)
     defer pfmt.Finish() // Finish flushes the output and cleans up safely.
 
 Use the returned formatter to print a simple json formatted hello.
 
     pfmt.Println("hello")
     // Output:
-    // {"level":"info","data": "hello"}
+    // {"label":"info","data": "hello"}
 
 You can also pass the printer any interface and it will attempt to print it (providing that it is printable).
 
@@ -37,7 +37,7 @@ You can also pass the printer any interface and it will attempt to print it (pro
         Test: "Some text",
     })
     // Output:
-    // {"level":"info","data":{"test":"Some text"}}
+    // {"label":"info","data":{"test":"Some text"}}
 
 Sometimes you'll want to output something only for specific formatters. Most commands take a list of formatters, which
 tells the command to only print for those formatters.

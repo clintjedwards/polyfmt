@@ -21,6 +21,6 @@ func ExampleNewFormatter() {
 	// is enabled it will be skipped.
 	pfmt.Println("hello", Pretty)
 
-	// Output: {"data":"hello","level":"info"}
-	// {"data":{"test":"Some text"},"level":"info"}
+	// Output: {"data":"hello","label":"info"}
+	// {"data":{"test":"Some text"},"label":"info"}
 }

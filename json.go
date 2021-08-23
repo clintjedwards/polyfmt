@@ -18,7 +18,7 @@ func (f *jsonFormatter) Print(msg interface{}, filter ...Mode) {
 	}
 
 	tmp := map[string]interface{}{
-		"level": "info",
+		"label": "info",
 		"data":  msg,
 	}
 	b, _ := json.Marshal(&tmp)
@@ -31,7 +31,7 @@ func (f *jsonFormatter) PrintErr(msg interface{}, filter ...Mode) {
 	}
 
 	tmp := map[string]interface{}{
-		"level": "error",
+		"label": "error",
 		"data":  msg,
 	}
 	b, _ := json.Marshal(&tmp)
@@ -44,7 +44,7 @@ func (f *jsonFormatter) PrintSuccess(msg interface{}, filter ...Mode) {
 	}
 
 	tmp := map[string]interface{}{
-		"level": "success",
+		"label": "success",
 		"data":  msg,
 	}
 	b, _ := json.Marshal(&tmp)
@@ -57,7 +57,7 @@ func (f *jsonFormatter) Println(msg interface{}, filter ...Mode) {
 	}
 
 	tmp := map[string]interface{}{
-		"level": "info",
+		"label": "info",
 		"data":  msg,
 	}
 	b, _ := json.Marshal(&tmp)

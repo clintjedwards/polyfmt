@@ -27,7 +27,7 @@ Use the returned formatter to print a simple json formatted hello.
 
     pfmt.Println("hello")
     // Output:
-    // {"info":"hello"}
+    // {"level":"info","data": "hello"}
 
 You can also pass the printer any interface and it will attempt to print it (providing that it is printable).
 
@@ -37,7 +37,7 @@ You can also pass the printer any interface and it will attempt to print it (pro
         Test: "Some text",
     })
     // Output:
-    // {"info":{"test":"Some text"}}
+    // {"level":"info","data":{"test":"Some text"}}
 
 Sometimes you'll want to output something only for specific formatters. Most commands take a list of formatters, which
 tells the command to only print for those formatters.

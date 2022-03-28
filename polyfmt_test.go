@@ -3,7 +3,7 @@ package polyfmt
 func ExampleNewFormatter() {
 	// Invoke the JSON printer. This is usually supplied by the user
 	// at runtime. Ex. --json, --pretty, --silent
-	pfmt, _ := NewFormatter(JSON)
+	pfmt, _ := NewFormatter(JSON, false)
 	defer pfmt.Finish() // Finish flushes the output and cleans up safely.
 
 	// Prints a simple json formatted hello.

@@ -62,10 +62,12 @@ func isFiltered(currMode Mode, filterList []Mode) bool {
 	return true
 }
 
-// NewFormatter create a new formatter with the appropriate mode. If mode is pretty and the environment
-// this is run in is not interactive, it will intelligently revert to json mode.
-func NewFormatter(mode Mode) (Formatter, error) {
-	if mode == Pretty && !isTTY() {
+// NewFormatter create a new formatter with the appropriate mode.
+// detectNonInteractive allows the user to opt-in to the ability to auto switch to JSON output
+// if we detect that the output is being piped into a non-interactive context.
+// (as in the case of piping to another command)
+func NewFormatter(mode Mode, detectNonInteractive bool) (Formatter, error) {
+	if mode == Pretty && !isTTY() && detectNonInteractive {
 		mode = JSON
 	}
 

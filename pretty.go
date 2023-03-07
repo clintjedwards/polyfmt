@@ -1,6 +1,7 @@
 package polyfmt
 
 import (
+	"bufio"
 	"fmt"
 	"os"
 	"time"
@@ -107,6 +108,27 @@ func (f *prettyFormatter) PrintWarning(msg any, filter ...Mode) {
 	_ = f.spinner.Stop()
 	fmt.Printf("%s %s\n", color.YellowString("!!"), msg)
 	_ = f.newSpinner()
+}
+
+func (f *prettyFormatter) PrintQuestion(msg any, filter ...Mode) string {
+	if isFiltered(Pretty, filter) {
+		return ""
+	}
+
+	f.spinner.StopCharacter("")
+	_ = f.spinner.Stop()
+
+	var input string
+	fmt.Printf("%s %s", color.MagentaString("?"), msg)
+	scanner := bufio.NewScanner(os.Stdin)
+
+	if scanner.Scan() {
+		input = scanner.Text()
+	}
+
+	_ = f.newSpinner()
+
+	return input
 }
 
 func (f *prettyFormatter) Finish() {

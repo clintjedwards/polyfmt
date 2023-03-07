@@ -1,8 +1,10 @@
 package polyfmt
 
 import (
+	"bufio"
 	"encoding/json"
 	"fmt"
+	"os"
 )
 
 // jsonFormatter wraps the passed in interface and prints it.
@@ -62,6 +64,28 @@ func (f *jsonFormatter) PrintWarning(msg any, filter ...Mode) {
 	}
 	b, _ := json.Marshal(&tmp)
 	fmt.Println(string(b))
+}
+
+func (f *jsonFormatter) PrintQuestion(msg any, filter ...Mode) string {
+	if isFiltered(JSON, filter) {
+		return ""
+	}
+
+	tmp := map[string]any{
+		"label": "question",
+		"data":  msg,
+	}
+	b, _ := json.Marshal(&tmp)
+
+	var input string
+	fmt.Println(string(b))
+	scanner := bufio.NewScanner(os.Stdin)
+
+	if scanner.Scan() {
+		input = scanner.Text()
+	}
+
+	return input
 }
 
 func (f *jsonFormatter) Println(msg any, filter ...Mode) {

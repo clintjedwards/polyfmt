@@ -23,22 +23,34 @@ type Formatter interface {
 	// Adding modes to the filter restricts the object being printed only
 	// to those modes.
 	Print(msg any, filter ...Mode)
+
 	// PrintErr prints the message noting it as an error to the user.
 	// Adding modes to the filter restricts the object being printed only
 	// to those modes.
 	PrintErr(msg any, filter ...Mode)
+
 	// PrintSuccess prints the message noting it as an error to the user.
 	// Adding modes to the filter restricts the object being printed only
 	// to those modes.
 	PrintSuccess(msg any, filter ...Mode)
+
 	// PrintWarning prints the message noting it as a warning to the user.
 	// Adding modes to the filter restricts the object being printed only
 	// to those modes.
 	PrintWarning(msg any, filter ...Mode)
+
+	// PrintQuestion prints the message noting it as a question to the user.
+	// It also collects user input using bufio.Scanner and returns it.
+	//
+	// Adding modes to the filter restricts the object being printed only
+	// to those modes.
+	PrintQuestion(msg any, filter ...Mode) string
+
 	// Println prints the message adding a newline to the end.
 	// Adding modes to the filter restricts the object being printed only
 	// to those modes.
 	Println(msg any, filter ...Mode)
+
 	// Cleans up and flushes any last bit of formatting.
 	// Should be called as the before program exit.
 	Finish()

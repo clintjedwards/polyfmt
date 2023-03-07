@@ -1,7 +1,9 @@
 package polyfmt
 
 import (
+	"bufio"
 	"fmt"
+	"os"
 
 	"github.com/fatih/color"
 )
@@ -43,6 +45,22 @@ func (f *plainFormatter) PrintWarning(msg any, filter ...Mode) {
 	}
 
 	fmt.Printf("%s %s\n", color.YellowString("!!"), msg)
+}
+
+func (f *plainFormatter) PrintQuestion(msg any, filter ...Mode) string {
+	if isFiltered(Plain, filter) {
+		return ""
+	}
+
+	var input string
+	fmt.Printf("%s %s", color.MagentaString("?"), msg)
+	scanner := bufio.NewScanner(os.Stdin)
+
+	if scanner.Scan() {
+		input = scanner.Text()
+	}
+
+	return input
 }
 
 func (f *plainFormatter) Println(msg any, filter ...Mode) {

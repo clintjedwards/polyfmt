@@ -8,9 +8,9 @@ func newSilentFormatter() (*silentFormatter, error) {
 	return &silentFormatter{}, nil
 }
 
-func (f *silentFormatter) Print(msg interface{}, filter ...Mode)        {}
-func (f *silentFormatter) PrintErr(msg interface{}, filter ...Mode)     {}
-func (f *silentFormatter) PrintSuccess(msg interface{}, filter ...Mode) {}
-func (f *silentFormatter) PrintWarning(msg interface{}, filter ...Mode) {}
-func (f *silentFormatter) Println(msg interface{}, filter ...Mode)      {}
-func (f *silentFormatter) Finish()                                      {}
+func (f *silentFormatter) Print(msg any, filter ...Mode)        {}
+func (f *silentFormatter) PrintErr(msg any, filter ...Mode)     {}
+func (f *silentFormatter) PrintSuccess(msg any, filter ...Mode) {}
+func (f *silentFormatter) PrintWarning(msg any, filter ...Mode) {}
+func (f *silentFormatter) Println(msg any, filter ...Mode)      {}
+func (f *silentFormatter) Finish()                              {}

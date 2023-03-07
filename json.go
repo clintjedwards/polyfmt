@@ -12,12 +12,12 @@ func newJSONFormatter() (*jsonFormatter, error) {
 	return &jsonFormatter{}, nil
 }
 
-func (f *jsonFormatter) Print(msg interface{}, filter ...Mode) {
+func (f *jsonFormatter) Print(msg any, filter ...Mode) {
 	if isFiltered(JSON, filter) {
 		return
 	}
 
-	tmp := map[string]interface{}{
+	tmp := map[string]any{
 		"label": "info",
 		"data":  msg,
 	}
@@ -25,12 +25,12 @@ func (f *jsonFormatter) Print(msg interface{}, filter ...Mode) {
 	fmt.Println(string(b))
 }
 
-func (f *jsonFormatter) PrintErr(msg interface{}, filter ...Mode) {
+func (f *jsonFormatter) PrintErr(msg any, filter ...Mode) {
 	if isFiltered(JSON, filter) {
 		return
 	}
 
-	tmp := map[string]interface{}{
+	tmp := map[string]any{
 		"label": "error",
 		"data":  msg,
 	}
@@ -38,12 +38,12 @@ func (f *jsonFormatter) PrintErr(msg interface{}, filter ...Mode) {
 	fmt.Println(string(b))
 }
 
-func (f *jsonFormatter) PrintSuccess(msg interface{}, filter ...Mode) {
+func (f *jsonFormatter) PrintSuccess(msg any, filter ...Mode) {
 	if isFiltered(JSON, filter) {
 		return
 	}
 
-	tmp := map[string]interface{}{
+	tmp := map[string]any{
 		"label": "success",
 		"data":  msg,
 	}
@@ -51,12 +51,12 @@ func (f *jsonFormatter) PrintSuccess(msg interface{}, filter ...Mode) {
 	fmt.Println(string(b))
 }
 
-func (f *jsonFormatter) PrintWarning(msg interface{}, filter ...Mode) {
+func (f *jsonFormatter) PrintWarning(msg any, filter ...Mode) {
 	if isFiltered(JSON, filter) {
 		return
 	}
 
-	tmp := map[string]interface{}{
+	tmp := map[string]any{
 		"label": "warning",
 		"data":  msg,
 	}
@@ -64,12 +64,12 @@ func (f *jsonFormatter) PrintWarning(msg interface{}, filter ...Mode) {
 	fmt.Println(string(b))
 }
 
-func (f *jsonFormatter) Println(msg interface{}, filter ...Mode) {
+func (f *jsonFormatter) Println(msg any, filter ...Mode) {
 	if isFiltered(JSON, filter) {
 		return
 	}
 
-	tmp := map[string]interface{}{
+	tmp := map[string]any{
 		"label": "info",
 		"data":  msg,
 	}

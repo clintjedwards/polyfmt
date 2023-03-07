@@ -57,7 +57,7 @@ func (f *prettyFormatter) newSpinner() error {
 	return nil
 }
 
-func (f *prettyFormatter) Print(msg interface{}, filter ...Mode) {
+func (f *prettyFormatter) Print(msg any, filter ...Mode) {
 	if isFiltered(Pretty, filter) {
 		return
 	}
@@ -67,7 +67,7 @@ func (f *prettyFormatter) Print(msg interface{}, filter ...Mode) {
 	f.currentMessage = formattedMsg
 }
 
-func (f *prettyFormatter) Println(msg interface{}, filter ...Mode) {
+func (f *prettyFormatter) Println(msg any, filter ...Mode) {
 	if isFiltered(Pretty, filter) {
 		return
 	}
@@ -78,7 +78,7 @@ func (f *prettyFormatter) Println(msg interface{}, filter ...Mode) {
 	_ = f.newSpinner()
 }
 
-func (f *prettyFormatter) PrintErr(msg interface{}, filter ...Mode) {
+func (f *prettyFormatter) PrintErr(msg any, filter ...Mode) {
 	if isFiltered(Pretty, filter) {
 		return
 	}
@@ -88,7 +88,7 @@ func (f *prettyFormatter) PrintErr(msg interface{}, filter ...Mode) {
 	_ = f.newSpinner()
 }
 
-func (f *prettyFormatter) PrintSuccess(msg interface{}, filter ...Mode) {
+func (f *prettyFormatter) PrintSuccess(msg any, filter ...Mode) {
 	if isFiltered(Pretty, filter) {
 		return
 	}
@@ -98,7 +98,7 @@ func (f *prettyFormatter) PrintSuccess(msg interface{}, filter ...Mode) {
 	_ = f.newSpinner()
 }
 
-func (f *prettyFormatter) PrintWarning(msg interface{}, filter ...Mode) {
+func (f *prettyFormatter) PrintWarning(msg any, filter ...Mode) {
 	if isFiltered(Pretty, filter) {
 		return
 	}

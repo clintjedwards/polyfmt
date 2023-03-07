@@ -22,23 +22,23 @@ type Formatter interface {
 	// Print will attempt to intelligently print objects passed to it.
 	// Adding modes to the filter restricts the object being printed only
 	// to those modes.
-	Print(msg interface{}, filter ...Mode)
+	Print(msg any, filter ...Mode)
 	// PrintErr prints the message noting it as an error to the user.
 	// Adding modes to the filter restricts the object being printed only
 	// to those modes.
-	PrintErr(msg interface{}, filter ...Mode)
+	PrintErr(msg any, filter ...Mode)
 	// PrintSuccess prints the message noting it as an error to the user.
 	// Adding modes to the filter restricts the object being printed only
 	// to those modes.
-	PrintSuccess(msg interface{}, filter ...Mode)
+	PrintSuccess(msg any, filter ...Mode)
 	// PrintWarning prints the message noting it as a warning to the user.
 	// Adding modes to the filter restricts the object being printed only
 	// to those modes.
-	PrintWarning(msg interface{}, filter ...Mode)
+	PrintWarning(msg any, filter ...Mode)
 	// Println prints the message adding a newline to the end.
 	// Adding modes to the filter restricts the object being printed only
 	// to those modes.
-	Println(msg interface{}, filter ...Mode)
+	Println(msg any, filter ...Mode)
 	// Cleans up and flushes any last bit of formatting.
 	// Should be called as the before program exit.
 	Finish()

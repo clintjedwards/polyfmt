@@ -8,6 +8,8 @@ import (
 type Mode string
 
 const (
+	// Plain outputs text in a humanized fashion without spinners.
+	Plain Mode = "plain"
 	// Pretty outputs text in a more humanized fashion and provides spinners for longer actions.
 	Pretty Mode = "pretty"
 	// JSON outputs json formatted text, mainly suitable to be read by computers.
@@ -72,6 +74,12 @@ func NewFormatter(mode Mode, detectNonInteractive bool) (Formatter, error) {
 	}
 
 	switch mode {
+	case Plain:
+		f, err := newPlainFormatter()
+		if err != nil {
+			return nil, err
+		}
+		return f, nil
 	case Pretty:
 		f, err := newPrettyFormatter()
 		if err != nil {

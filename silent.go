@@ -11,5 +11,6 @@ func newSilentFormatter() (*silentFormatter, error) {
 func (f *silentFormatter) Print(msg interface{}, filter ...Mode)        {}
 func (f *silentFormatter) PrintErr(msg interface{}, filter ...Mode)     {}
 func (f *silentFormatter) PrintSuccess(msg interface{}, filter ...Mode) {}
+func (f *silentFormatter) PrintWarning(msg interface{}, filter ...Mode) {}
 func (f *silentFormatter) Println(msg interface{}, filter ...Mode)      {}
 func (f *silentFormatter) Finish()                                      {}

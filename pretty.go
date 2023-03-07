@@ -5,6 +5,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/fatih/color"
 	"github.com/theckman/yacspin"
 )
 
@@ -94,6 +95,17 @@ func (f *prettyFormatter) PrintSuccess(msg interface{}, filter ...Mode) {
 
 	f.spinner.Suffix(fmt.Sprintf(" %s", msg))
 	_ = f.spinner.Stop()
+	_ = f.newSpinner()
+}
+
+func (f *prettyFormatter) PrintWarning(msg interface{}, filter ...Mode) {
+	if isFiltered(Pretty, filter) {
+		return
+	}
+
+	f.spinner.StopCharacter("")
+	_ = f.spinner.Stop()
+	fmt.Printf("%s %s\n", color.YellowString("!!"), msg)
 	_ = f.newSpinner()
 }
 

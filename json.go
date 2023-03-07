@@ -51,6 +51,19 @@ func (f *jsonFormatter) PrintSuccess(msg interface{}, filter ...Mode) {
 	fmt.Println(string(b))
 }
 
+func (f *jsonFormatter) PrintWarning(msg interface{}, filter ...Mode) {
+	if isFiltered(JSON, filter) {
+		return
+	}
+
+	tmp := map[string]interface{}{
+		"label": "warning",
+		"data":  msg,
+	}
+	b, _ := json.Marshal(&tmp)
+	fmt.Println(string(b))
+}
+
 func (f *jsonFormatter) Println(msg interface{}, filter ...Mode) {
 	if isFiltered(JSON, filter) {
 		return

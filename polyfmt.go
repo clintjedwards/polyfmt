@@ -43,7 +43,10 @@ type Formatter interface {
 	// It also collects user input using bufio.Scanner and returns it.
 	//
 	// Adding modes to the filter restricts the object being printed only
-	// to those modes.
+	// to those modes. This is especially important for this mode,
+	// since even in JSON output it will stop and wait for user input.
+	//
+	// If filtered will return an empty string.
 	PrintQuestion(msg any, filter ...Mode) string
 
 	// Println prints the message adding a newline to the end.

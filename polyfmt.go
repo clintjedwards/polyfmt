@@ -3,6 +3,8 @@ package polyfmt
 import (
 	"fmt"
 	"os"
+
+	"github.com/fatih/color"
 )
 
 type Mode string
@@ -90,6 +92,15 @@ func isFiltered(currMode Mode, filterList []Mode) bool {
 func NewFormatter(mode Mode, detectNonInteractive bool) (Formatter, error) {
 	if mode == Pretty && !isTTY() && detectNonInteractive {
 		mode = JSON
+	}
+
+	// Explicitly set noColor since the backing library attempts to detect NonInteractive ttys and turns color off
+	// automagically. This is a problem for non-interactive environments that can actually support color.
+	noColor := os.Getenv("NO_COLOR")
+	if noColor != "" {
+		color.NoColor = true
+	} else {
+		color.NoColor = false
 	}
 
 	switch mode {

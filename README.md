@@ -45,3 +45,7 @@ tells the command to only print for those formatters.
     pfmt.Println("hello", Pretty)
     // Output:
     //
+
+## Additional Details
+
+You can turn off color by using the popular `NO_COLOR` environment variable.

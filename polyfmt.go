@@ -20,6 +20,18 @@ const (
 	Silent Mode = "silent"
 )
 
+type Options struct {
+	// Allows the user to opt-in to the ability for polyfmt to detect non interactive terminals and
+	// auto switch to JSON output. Default is false.
+	AutoDetectTTY *bool
+}
+
+func DefaultOptions() Options {
+	return Options{
+		AutoDetectTTY: ptr(false),
+	}
+}
+
 type Formatter interface {
 	// Print will attempt to intelligently print objects passed to it.
 	// Adding modes to the filter restricts the object being printed only
@@ -86,11 +98,19 @@ func isFiltered(currMode Mode, filterList []Mode) bool {
 }
 
 // NewFormatter create a new formatter with the appropriate mode.
-// detectNonInteractive allows the user to opt-in to the ability to auto switch to JSON output
 // if we detect that the output is being piped into a non-interactive context.
 // (as in the case of piping to another command)
-func NewFormatter(mode Mode, detectNonInteractive bool) (Formatter, error) {
-	if mode == Pretty && !isTTY() && detectNonInteractive {
+func NewFormatter(mode Mode, options Options) (Formatter, error) {
+	opts := DefaultOptions()
+
+	if options.AutoDetectTTY != nil {
+		opts.AutoDetectTTY = options.AutoDetectTTY
+	}
+
+	// The pretty mode does not print well when not in an interactive terminal. This check is
+	// here mostly to cover situations where the user has forgotten the application is in
+	// pretty mode.
+	if mode == Pretty && !isTTY() && *opts.AutoDetectTTY {
 		mode = JSON
 	}
 
@@ -131,4 +151,8 @@ func NewFormatter(mode Mode, detectNonInteractive bool) (Formatter, error) {
 	default:
 		return nil, fmt.Errorf("invalid formatter: %q", mode)
 	}
+}
+
+func ptr[T any](v T) *T {
+	return &v
 }

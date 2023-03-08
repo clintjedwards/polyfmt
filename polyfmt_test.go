@@ -7,7 +7,7 @@ import (
 func ExampleNewFormatter() {
 	// Invoke the JSON printer. This is usually supplied by the user
 	// at runtime. Ex. --json, --pretty, --silent
-	pfmt, _ := polyfmt.NewFormatter(polyfmt.JSON, false)
+	pfmt, _ := polyfmt.NewFormatter(polyfmt.JSON, polyfmt.DefaultOptions())
 	defer pfmt.Finish() // Finish flushes the output and cleans up safely.
 
 	// Prints a simple json formatted hello.

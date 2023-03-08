@@ -24,7 +24,7 @@ Polyfmt provides a very simple API, full of print functions.
 Initiate a new formatter instance, passing in what type of formatter you want back. This is usually passed in
 by your user at runtime via flags or config.
 
-    pfmt, _ := polyfmt.NewFormatter(polyfmt.JSON)
+    pfmt, _ := polyfmt.NewFormatter(polyfmt.JSON, polyfmt.DefaultOptions())
     defer pfmt.Finish() // Finish flushes the output and cleans up safely.
 
 Use the returned formatter to print a simple json formatted hello.

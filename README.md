@@ -5,6 +5,8 @@
 A convenience package that provides multiple forms of formatted output. Useful for CLI applications where
 you might want to provide JSON output for machine users, but pretty output for interactive users.
 
+<img src="./demo.gif" />
+
 ## Why
 
 In a command line application you usually want to provide some well-formatted output to users. This

@@ -1,5 +1,7 @@
 # Polyfmt
 
+[![godoc for clintjedwards/polyfmt][godoc-badge]][godoc-url]
+
 A convenience package that provides multiple forms of formatted output. Useful for CLI applications where
 you might want to provide JSON output for machine users, but pretty output for interactive users.
 
@@ -49,3 +51,6 @@ tells the command to only print for those formatters.
 ## Additional Details
 
 You can turn off color by using the popular `NO_COLOR` environment variable.
+
+[godoc-badge]: https://pkg.go.dev/badge/github.com/clintjedwards/polyfmt
+[godoc-url]: https://pkg.go.dev/github.com/clintjedwards/polyfmt

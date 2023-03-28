@@ -8,12 +8,13 @@ func newSilentFormatter() (*silentFormatter, error) {
 	return &silentFormatter{}, nil
 }
 
-func (f *silentFormatter) Print(msg any, filter ...Mode)        {}
-func (f *silentFormatter) PrintErr(msg any, filter ...Mode)     {}
-func (f *silentFormatter) PrintSuccess(msg any, filter ...Mode) {}
-func (f *silentFormatter) PrintWarning(msg any, filter ...Mode) {}
-func (f *silentFormatter) PrintQuestion(msg any, filter ...Mode) string {
+func (f *silentFormatter) Print(msg any, filter ...Mode)   {}
+func (f *silentFormatter) Err(msg any, filter ...Mode)     {}
+func (f *silentFormatter) Success(msg any, filter ...Mode) {}
+func (f *silentFormatter) Warning(msg any, filter ...Mode) {}
+func (f *silentFormatter) Question(msg any, filter ...Mode) string {
 	return ""
 }
 func (f *silentFormatter) Println(msg any, filter ...Mode) {}
+func (f *silentFormatter) Debugln(msg any, filter ...Mode) {}
 func (f *silentFormatter) Finish()                         {}

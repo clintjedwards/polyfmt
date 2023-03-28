@@ -24,11 +24,15 @@ type Options struct {
 	// Allows the user to opt-in to the ability for polyfmt to detect non interactive terminals and
 	// auto switch to JSON output. Default is false.
 	AutoDetectTTY *bool
+
+	// Turn on printing for debug lines
+	Debug *bool
 }
 
 func DefaultOptions() Options {
 	return Options{
 		AutoDetectTTY: ptr(false),
+		Debug:         ptr(false),
 	}
 }
 
@@ -38,22 +42,31 @@ type Formatter interface {
 	// to those modes.
 	Print(msg any, filter ...Mode)
 
-	// PrintErr prints the message noting it as an error to the user.
+	// Println prints the message adding a newline to the end.
 	// Adding modes to the filter restricts the object being printed only
 	// to those modes.
-	PrintErr(msg any, filter ...Mode)
+	Println(msg any, filter ...Mode)
 
-	// PrintSuccess prints the message noting it as an error to the user.
+	// Err prints the message noting it as an error to the user.
 	// Adding modes to the filter restricts the object being printed only
 	// to those modes.
-	PrintSuccess(msg any, filter ...Mode)
+	Err(msg any, filter ...Mode)
 
-	// PrintWarning prints the message noting it as a warning to the user.
+	// Success prints the message noting it as an error to the user.
 	// Adding modes to the filter restricts the object being printed only
 	// to those modes.
-	PrintWarning(msg any, filter ...Mode)
+	Success(msg any, filter ...Mode)
 
-	// PrintQuestion prints the message noting it as a question to the user.
+	// Warning prints the message noting it as a warning to the user.
+	// Adding modes to the filter restricts the object being printed only
+	// to those modes.
+	Warning(msg any, filter ...Mode)
+
+	// Debugln prints a message only if debug is turned on in the formatter options.
+	// Newline included.
+	Debugln(msg any, filter ...Mode)
+
+	// Question prints the message noting it as a question to the user.
 	// It also collects user input using bufio.Scanner and returns it.
 	//
 	// Adding modes to the filter restricts the object being printed only
@@ -61,12 +74,7 @@ type Formatter interface {
 	// since even in JSON output it will stop and wait for user input.
 	//
 	// If filtered will return an empty string.
-	PrintQuestion(msg any, filter ...Mode) string
-
-	// Println prints the message adding a newline to the end.
-	// Adding modes to the filter restricts the object being printed only
-	// to those modes.
-	Println(msg any, filter ...Mode)
+	Question(msg any, filter ...Mode) string
 
 	// Cleans up and flushes any last bit of formatting.
 	// Should be called as the before program exit.
@@ -125,19 +133,19 @@ func NewFormatter(mode Mode, options Options) (Formatter, error) {
 
 	switch mode {
 	case Plain:
-		f, err := newPlainFormatter()
+		f, err := newPlainFormatter(*options.Debug)
 		if err != nil {
 			return nil, err
 		}
 		return f, nil
 	case Pretty:
-		f, err := newPrettyFormatter()
+		f, err := newPrettyFormatter(*options.Debug)
 		if err != nil {
 			return nil, err
 		}
 		return f, nil
 	case JSON:
-		f, err := newJSONFormatter()
+		f, err := newJSONFormatter(*options.Debug)
 		if err != nil {
 			return nil, err
 		}

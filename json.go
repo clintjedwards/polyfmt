@@ -8,10 +8,14 @@ import (
 )
 
 // jsonFormatter wraps the passed in interface and prints it.
-type jsonFormatter struct{}
+type jsonFormatter struct {
+	debug bool
+}
 
-func newJSONFormatter() (*jsonFormatter, error) {
-	return &jsonFormatter{}, nil
+func newJSONFormatter(debug bool) (*jsonFormatter, error) {
+	return &jsonFormatter{
+		debug: debug,
+	}, nil
 }
 
 func (f *jsonFormatter) Print(msg any, filter ...Mode) {
@@ -27,7 +31,7 @@ func (f *jsonFormatter) Print(msg any, filter ...Mode) {
 	fmt.Println(string(b))
 }
 
-func (f *jsonFormatter) PrintErr(msg any, filter ...Mode) {
+func (f *jsonFormatter) Err(msg any, filter ...Mode) {
 	if isFiltered(JSON, filter) {
 		return
 	}
@@ -40,7 +44,7 @@ func (f *jsonFormatter) PrintErr(msg any, filter ...Mode) {
 	fmt.Println(string(b))
 }
 
-func (f *jsonFormatter) PrintSuccess(msg any, filter ...Mode) {
+func (f *jsonFormatter) Success(msg any, filter ...Mode) {
 	if isFiltered(JSON, filter) {
 		return
 	}
@@ -53,7 +57,7 @@ func (f *jsonFormatter) PrintSuccess(msg any, filter ...Mode) {
 	fmt.Println(string(b))
 }
 
-func (f *jsonFormatter) PrintWarning(msg any, filter ...Mode) {
+func (f *jsonFormatter) Warning(msg any, filter ...Mode) {
 	if isFiltered(JSON, filter) {
 		return
 	}
@@ -66,7 +70,7 @@ func (f *jsonFormatter) PrintWarning(msg any, filter ...Mode) {
 	fmt.Println(string(b))
 }
 
-func (f *jsonFormatter) PrintQuestion(msg any, filter ...Mode) string {
+func (f *jsonFormatter) Question(msg any, filter ...Mode) string {
 	if isFiltered(JSON, filter) {
 		return ""
 	}
@@ -86,6 +90,19 @@ func (f *jsonFormatter) PrintQuestion(msg any, filter ...Mode) string {
 	}
 
 	return input
+}
+
+func (f *jsonFormatter) Debugln(msg any, filter ...Mode) {
+	if isFiltered(JSON, filter) || !f.debug {
+		return
+	}
+
+	tmp := map[string]any{
+		"label": "debug",
+		"data":  msg,
+	}
+	b, _ := json.Marshal(&tmp)
+	fmt.Println(string(b))
 }
 
 func (f *jsonFormatter) Println(msg any, filter ...Mode) {

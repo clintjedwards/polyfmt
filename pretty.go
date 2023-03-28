@@ -18,9 +18,10 @@ type prettyFormatter struct {
 	spinner        *yacspin.Spinner
 	cfg            yacspin.Config
 	currentMessage string // We store this so that we can restore it when we start a new spinner
+	debug          bool
 }
 
-func newPrettyFormatter() (*prettyFormatter, error) {
+func newPrettyFormatter(debug bool) (*prettyFormatter, error) {
 	cfg := yacspin.Config{
 		Writer:            os.Stdout,
 		Frequency:         100 * time.Millisecond,
@@ -33,7 +34,8 @@ func newPrettyFormatter() (*prettyFormatter, error) {
 	}
 
 	f := &prettyFormatter{
-		cfg: cfg,
+		cfg:   cfg,
+		debug: debug,
 	}
 
 	err := f.newSpinner()
@@ -79,7 +81,7 @@ func (f *prettyFormatter) Println(msg any, filter ...Mode) {
 	_ = f.newSpinner()
 }
 
-func (f *prettyFormatter) PrintErr(msg any, filter ...Mode) {
+func (f *prettyFormatter) Err(msg any, filter ...Mode) {
 	if isFiltered(Pretty, filter) {
 		return
 	}
@@ -89,7 +91,7 @@ func (f *prettyFormatter) PrintErr(msg any, filter ...Mode) {
 	_ = f.newSpinner()
 }
 
-func (f *prettyFormatter) PrintSuccess(msg any, filter ...Mode) {
+func (f *prettyFormatter) Success(msg any, filter ...Mode) {
 	if isFiltered(Pretty, filter) {
 		return
 	}
@@ -99,7 +101,7 @@ func (f *prettyFormatter) PrintSuccess(msg any, filter ...Mode) {
 	_ = f.newSpinner()
 }
 
-func (f *prettyFormatter) PrintWarning(msg any, filter ...Mode) {
+func (f *prettyFormatter) Warning(msg any, filter ...Mode) {
 	if isFiltered(Pretty, filter) {
 		return
 	}
@@ -110,7 +112,7 @@ func (f *prettyFormatter) PrintWarning(msg any, filter ...Mode) {
 	_ = f.newSpinner()
 }
 
-func (f *prettyFormatter) PrintQuestion(msg any, filter ...Mode) string {
+func (f *prettyFormatter) Question(msg any, filter ...Mode) string {
 	if isFiltered(Pretty, filter) {
 		return ""
 	}
@@ -129,6 +131,19 @@ func (f *prettyFormatter) PrintQuestion(msg any, filter ...Mode) string {
 	_ = f.newSpinner()
 
 	return input
+}
+
+func (f *prettyFormatter) Debugln(msg any, filter ...Mode) {
+	if isFiltered(Pretty, filter) || !f.debug {
+		return
+	}
+
+	c := color.New(color.BgYellow).Add(color.Faint)
+
+	f.spinner.StopCharacter("")
+	_ = f.spinner.Stop()
+	fmt.Printf("%s %s\n", c.Sprint("DEBUG"), msg)
+	_ = f.newSpinner()
 }
 
 func (f *prettyFormatter) Finish() {

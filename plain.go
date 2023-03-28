@@ -9,10 +9,14 @@ import (
 )
 
 // plainFormatter wraps the passed in interface and prints it.
-type plainFormatter struct{}
+type plainFormatter struct {
+	debug bool
+}
 
-func newPlainFormatter() (*plainFormatter, error) {
-	return &plainFormatter{}, nil
+func newPlainFormatter(debug bool) (*plainFormatter, error) {
+	return &plainFormatter{
+		debug: debug,
+	}, nil
 }
 
 func (f *plainFormatter) Print(msg any, filter ...Mode) {
@@ -23,7 +27,7 @@ func (f *plainFormatter) Print(msg any, filter ...Mode) {
 	fmt.Print(msg)
 }
 
-func (f *plainFormatter) PrintErr(msg any, filter ...Mode) {
+func (f *plainFormatter) Err(msg any, filter ...Mode) {
 	if isFiltered(Plain, filter) {
 		return
 	}
@@ -31,7 +35,7 @@ func (f *plainFormatter) PrintErr(msg any, filter ...Mode) {
 	fmt.Printf("%s %s\n", color.RedString("x"), msg)
 }
 
-func (f *plainFormatter) PrintSuccess(msg any, filter ...Mode) {
+func (f *plainFormatter) Success(msg any, filter ...Mode) {
 	if isFiltered(Plain, filter) {
 		return
 	}
@@ -39,7 +43,7 @@ func (f *plainFormatter) PrintSuccess(msg any, filter ...Mode) {
 	fmt.Printf("%s %s\n", color.GreenString("✓"), msg)
 }
 
-func (f *plainFormatter) PrintWarning(msg any, filter ...Mode) {
+func (f *plainFormatter) Warning(msg any, filter ...Mode) {
 	if isFiltered(Plain, filter) {
 		return
 	}
@@ -47,7 +51,7 @@ func (f *plainFormatter) PrintWarning(msg any, filter ...Mode) {
 	fmt.Printf("%s %s\n", color.YellowString("!!"), msg)
 }
 
-func (f *plainFormatter) PrintQuestion(msg any, filter ...Mode) string {
+func (f *plainFormatter) Question(msg any, filter ...Mode) string {
 	if isFiltered(Plain, filter) {
 		return ""
 	}
@@ -61,6 +65,16 @@ func (f *plainFormatter) PrintQuestion(msg any, filter ...Mode) string {
 	}
 
 	return input
+}
+
+func (f *plainFormatter) Debugln(msg any, filter ...Mode) {
+	if isFiltered(Plain, filter) || !f.debug {
+		return
+	}
+
+	c := color.New(color.BgYellow).Add(color.Faint)
+
+	fmt.Printf("%s %s\n", c.Sprint("DEBUG"), msg)
 }
 
 func (f *plainFormatter) Println(msg any, filter ...Mode) {

@@ -1,4 +1,4 @@
-module github.com/clintjedwards/polyfmt
+module github.com/clintjedwards/polyfmt/v2
 
 go 1.18
 

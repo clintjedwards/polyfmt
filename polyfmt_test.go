@@ -1,7 +1,7 @@
 package polyfmt_test
 
 import (
-	"github.com/clintjedwards/polyfmt"
+	"github.com/clintjedwards/polyfmt/v2"
 )
 
 func ExampleNewFormatter() {
@@ -27,4 +27,24 @@ func ExampleNewFormatter() {
 
 	// Output: {"data":"hello","label":"info"}
 	// {"data":{"test":"Some text"},"label":"info"}
+}
+
+func ExampleFormatter_Debugln() {
+	// Sometimes you'll want your tooling to print debug messages if needed.
+	// The debug option allows you to write those debug lines normally and
+	// only show them when you want to.
+	options := polyfmt.DefaultOptions()
+	debug := true
+	options.Debug = &debug
+	pfmt, _ := polyfmt.NewFormatter(polyfmt.JSON, options)
+	defer pfmt.Finish() // Finish flushes the output and cleans up safely.
+
+	// Prints a normal JSON formatted hello.
+	pfmt.Println("hello")
+
+	// Prints a debug line
+	pfmt.Debugln("hello!")
+
+	// Output: {"data":"hello","label":"info"}
+	// {"data":"hello!","label":"debug"}
 }
